@@ -11,6 +11,7 @@
   <!-- SweetAlert2 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -72,7 +73,7 @@
 
     // Mostrar 3 fotos en un popup
     function mostrarFotos(raza) {
-      fetch(`https://dog.ceo/api/breed/${raza}/images/random/3`)
+      fetch(`https://dog.ceo/api/breed/${raza}/images/random/10`)
         .then(response => response.json())
         .then(data => {
           Swal.fire({
@@ -90,7 +91,7 @@
       contenedor.innerHTML = '';
       volverBtn.style.display = 'inline-block';
 
-      fetch(`https://dog.ceo/api/breed/${raza}/images/random/3`)
+      fetch(`https://dog.ceo/api/breed/${raza}/images/random/10`)
         .then(response => response.json())
         .then(data => {
           data.message.forEach(img => {
