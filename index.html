@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorador de Perros</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1> Explorador de Perros</h1>
+    <div id="contenedor" class="row justify-content-center"></div>
+
+    <script>
+        // Traer listado de razas
+        fetch('https://dog.ceo/api/breeds/list/all')
+            .then(response => response.json())
+            .then(data => {
+                const razas = Object.keys(data.message);
+                const contenedor = document.getElementById('contenedor');
+
+                // Mostrar las primeras 10 razas
+                razas.slice(0, 10).forEach(raza => {
+                    fetch(`https://dog.ceo/api/breed/${raza}/images/random`)
+                        .then(res => res.json())
+                        .then(imgData => {
+                            const col = document.createElement('div');
+                            col.className = 'col-md-4 col-lg-3 mb-4';
+
+                            col.innerHTML = `
+                <div class="card shadow-sm">
+                  <img src="${imgData.message}" class="card-img-top" alt="${raza}">
+                  <div class="card-body text-center">
+                    <h5 class="card-title text-capitalize">${raza}</h5>
+                    <button class="btn btn-primary btn-sm" onclick="mostrarFotos('${raza}')">Ver más fotos</button>
+                  </div>
+                </div>
+              `;
+                            contenedor.appendChild(col);
+                        });
+                });
+            });
+        
+        function mostrarFotos(raza) {
+            fetch(`https://dog.ceo/api/breed/${raza}/images/random/3`)
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire({
+                        title: `Fotos de ${raza}`,
+                        html: data.message.map(img => `<img src="${img}" width="100%" style="margin-bottom:10px">`).join(""),
+                        width: 600,
+                        confirmButtonText: 'Cerrar'
+                    });
+                });
+        }
+    </script>
+</body>
+
+</html>
